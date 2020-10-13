@@ -1,0 +1,63 @@
+{% extends 'blog/main.html' %}
+{% load static %}
+{% block main_section %}
+    {% for post in news %}
+      <div class="alert alert-light">
+        <h1>{{ post.title }}</h1>
+        <p>{{ post.text|striptags|truncatechars:200 }}</p>
+        <div class="row">
+          <div>
+            {% if post.avtor.profile.img %}
+              <img src="{{ post.avtor.profile.img.url }}" alt="{{ post.avtor }}" class="user_image">
+            {% else %}
+              <img src="/pictures/default.jpg" alt="{{ post.avtor }}" class="user_image">
+            {% endif %}
+          </div>
+          <div class="mt-2">
+            <span class="text-muted"><b>Дата:</b>{{ post.date|date:"d E Y в H:i:s" }}</span>
+            <p><b>Автор:</b> <a href="{% url 'user-news' post.avtor %}">{{ post.avtor }}</a></p>
+          </div>
+        </div>
+        <a href="{% url 'news-detail' post.id %}" class="btn btn-outline-warning">Читать далее</a>
+      </div>
+    {% endfor %}
+
+    {% if is_paginated %}
+      {% if page_obj.has_previous %}
+        <a href="/" class="btn btn-outline-warning">Начало</a>
+        <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-outline-warning">Предыдущая</a>
+      {% endif%}
+
+       <!-- Начало Прудыдущая 2 3 4 5 6 Следующая Последняя -->
+       {% for num in page_obj.paginator.page_range %}
+         {% if num == page_obj.number %}
+           <button class="btn btn-warning">{{ num }}</button>
+         {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+           <a href="?page={{ num }}" class="btn btn-outline-warning">{{ num }}</a>
+         {% endif %}
+       {% endfor %}
+
+      {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}" class="btn btn-outline-warning">Следующая</a>
+        <a href="?page={{ page_obj.paginator.num_pages }}" class="btn btn-outline-warning">Последняя</a>
+      {% endif%}
+
+
+    {% endif%}
+{% endblock main_section %}
+
+{% block aside_news_section %}
+  <h5><b>НАШИ СЛУЖЕНИЯ:</b></h5>
+  <h5> Воскресение:</h5>
+  <h6>11:00 БОГОСЛУЖЕНИЕ</h6>
+  <h5> Пятница:</h5>
+  <h6>20:00 Группы по изучению Библии</h6>
+  <h5>Суббота:</h5>
+  <h6>20:00 Молитвенное служение</h6>
+  <a href="https://itproger.com/news/1" target="_blank">
+  <button class="btn btn-warning">Посмотреть</button>
+{% endblock aside_news_section %}
+
+{% block img_section %}
+ <img src="{% static 'mainApp/image/01.jpeg' %}" class="img-thumbnail">
+{% endblock img_section %}

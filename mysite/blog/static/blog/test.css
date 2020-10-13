@@ -1,0 +1,13 @@
+body{
+  margin:0;
+  background-image: : #fafafa;
+}
+
+.testBlock{
+    border: 1px groove silver;
+    height: 1000px;
+    width: 1000px;
+    background-color: #f7f7f7;
+    margin:auto;
+    
+}
